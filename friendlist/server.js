@@ -8,8 +8,8 @@ new WebpackDevServer(webpack(config), {
   historyApiFallback: true
 }).listen(9000, '0.0.0.0', function (err, result) {
   if (err) {
-    return console.log(err);
+    console.log(err);
   }
 
-  console.log('Listening at http://0.0.0.0:9000/');
+  console.log('Listening at 0.0.0.0:9000');
 });
