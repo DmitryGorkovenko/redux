@@ -1,21 +1,15 @@
-import React from 'react';
-import { createStore } from 'redux';
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import todoApp from './reducers'
+import App from './components/App'
 
-function counter(state = 0, action) {
-    switch (action.type) {
-    case 'INCREMENT':
-        return state + 1;
-    case 'DECREMENT':
-        return state - 1;
-    default:
-        return state;
-    }
-}
+let store = createStore(todoApp)
 
-let store = createStore(counter);
-
-store.subscribe(() => console.log(store.getState()));
-
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'DECREMENT' });
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
