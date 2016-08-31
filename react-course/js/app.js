@@ -1,19 +1,39 @@
 var photos = ['images/cat.jpg', 'images/dog.jpg', 'images/ow1.jpg'];
 
-// ReactDOM.render(
-// 	<App>
-// 		<Photos photos=photos />
-// 		<LastNews />
-// 		<Comments />
-// 	</App>,
-// 	document.getElementById('root')
-// );
+var my_news = [
+	{
+		id: 1
+		,author: 'Саша Печкин'
+		,text: 'В четверг, четвертого числа...'
+	}
+	,
+	{
+		id: 2
+		,author: 'Просто Вася'
+		,text: 'Считаю, что $ должен стоить 35 рублей!'
+	}
+	,
+	{
+		id: 3
+		,author: 'Гость'
+		,text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000'
+	}
+];
 
 var News = React.createClass({
 	render: function() {
+		var data = this.props.data;
+		var newsTemplate = data.map(function(item) {
+			return (
+				<div key={item.id}>
+					<p className="author">{item.author}</p>
+					<p className="text">{item.text}</p>
+				</div>
+			)
+		})
 		return (
 			<div className="news">
-				К сожалению, новостей нет.
+				{newsTemplate}
 			</div>
 		)
 	}
@@ -34,7 +54,7 @@ var App = React.createClass({
 		return (
 			<div className="app">
 				Всем привет, я компонент App!
-				<News />
+				<News data={my_news} />
 				<Comments />
 			</div>
 		)
