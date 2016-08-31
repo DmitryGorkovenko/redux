@@ -6,14 +6,12 @@ var my_news = [
 		,author: 'Саша Печкин'
 		,text: 'В четверг, четвертого числа...'
 	}
-	,
-	{
+	,{
 		id: 2
 		,author: 'Просто Вася'
 		,text: 'Считаю, что $ должен стоить 35 рублей!'
 	}
-	,
-	{
+	,{
 		id: 3
 		,author: 'Гость'
 		,text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000'
@@ -23,17 +21,23 @@ var my_news = [
 var News = React.createClass({
 	render: function() {
 		var data = this.props.data;
-		var newsTemplate = data.map(function(item) {
-			return (
-				<div key={item.id}>
-					<p className="author">{item.author}</p>
-					<p className="text">{item.text}</p>
-				</div>
-			)
-		})
+		var newsTemplate;
+		if (data.length > 0) {
+			newsTemplate = data.map(function(item) {
+				return (
+					<div key={item.id}>
+						<p className="author">{item.author}</p>
+						<p className="text">{item.text}</p>
+					</div>
+				)
+			})	
+		} else {
+			newsTemplate = <p>К сожалению, новостей нет.</p>
+		}
 		return (
 			<div className="news">
 				{newsTemplate}
+				<p className={data.length > 0 ? '':'hidden'}><strong>Новостей всего: {data.length}</strong></p>
 			</div>
 		)
 	}
