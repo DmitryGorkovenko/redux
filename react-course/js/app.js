@@ -1,9 +1,9 @@
 var photos = ['images/cat.jpg', 'images/dog.jpg', 'images/ow1.jpg'];
 
-var my_news = [
+var myNews = [
 	{
 		id: 1
-		,author: 'Саша Печкин'
+		// ,author: 'Саша Печкин'
 		,text: 'В четверг, четвертого числа...'
 	}
 	,{
@@ -18,16 +18,37 @@ var my_news = [
 	}
 ];
 
+var Article = React.createClass({
+    displayName: 'Article',
+    propTypes: {
+        article: React.PropTypes.shape({
+        	author: React.PropTypes.string.isRequired,
+        	text: React.PropTypes.string.isRequired
+        })
+    },
+    render() {
+    	var article = this.props.article;
+        return (
+        	<div className="article">
+				<p className="author">{article.author}:</p>
+				<p className="text">{article.text}</p>
+        	</div>
+        );
+    }
+});
+
 var News = React.createClass({
+	propTypes: {
+	    news: React.PropTypes.array.isRequired
+	},
 	render: function() {
-		var data = this.props.data;
+		var news = this.props.news;
 		var newsTemplate;
-		if (data.length > 0) {
-			newsTemplate = data.map(function(item) {
+		if (news.length > 0) {
+			newsTemplate = news.map(function(item) {
 				return (
 					<div key={item.id}>
-						<p className="author">{item.author}</p>
-						<p className="text">{item.text}</p>
+						<Article article={item} />
 					</div>
 				)
 			})	
@@ -37,29 +58,18 @@ var News = React.createClass({
 		return (
 			<div className="news">
 				{newsTemplate}
-				<p className={data.length > 0 ? '':'hidden'}><strong>Новостей всего: {data.length}</strong></p>
+				<p className={news.length > 0 ? 'count':'hidden'}><strong>Новостей всего: {news.length}</strong></p>
 			</div>
 		)
 	}
-});
-
-var Comments = React.createClass({
-    render() {
-        return (
-            <div className="comments">
-            	Нет новостей - комментировать нечего.
-            </div>
-        );
-    }
 });
 
 var App = React.createClass({
 	render: function() {
 		return (
 			<div className="app">
-				Всем привет, я компонент App!
-				<News data={my_news} />
-				<Comments />
+				<h3>Новости</h3>
+				<News news={myNews} />
 			</div>
 		)
 	}
