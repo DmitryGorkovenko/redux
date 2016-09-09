@@ -44,6 +44,9 @@ var Article = React.createClass({
     render() {
         var article = this.props.article,
             visible = this.state.visible;
+
+        console.log('render', this);
+
         return (
             <div className="article">
                 <p className="author">{article.author}:</p>
@@ -64,8 +67,17 @@ var News = React.createClass({
     propTypes: {
         news: React.PropTypes.array.isRequired
     },
+    getInitialState() {
+        return {
+            counter: 0  
+        };
+    },
+    incrementCounter() {
+        this.setState({counter: ++this.state.counter});
+    },
     render: function() {
         var news = this.props.news;
+        var counter = this.state.counter;
         var newsTemplate;
         if (news.length > 0) {
             newsTemplate = news.map(function(item) {
@@ -81,7 +93,9 @@ var News = React.createClass({
         return (
             <div className="news">
                 {newsTemplate}
-                <p className={news.length > 0 ? 'count':'hidden'}><strong>Новостей всего: {news.length}</strong></p>
+                <p className={news.length > 0 ? 'count':'hidden'}>
+                    <strong onClick={this.incrementCounter}>Новостей всего: {news.length}</strong>
+                </p>
             </div>
         )
     }
