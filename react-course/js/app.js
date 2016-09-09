@@ -37,15 +37,11 @@ var Article = React.createClass({
     },
     readmoreClick(e) {
         e.preventDefault();
-        this.setState({visible: true}, function() {
-            console.log('состояние изменилось');
-        });
+        this.setState({visible: true});
     },
     render() {
         var article = this.props.article,
             visible = this.state.visible;
-
-        console.log('render', this);
 
         return (
             <div className="article">
@@ -72,9 +68,6 @@ var News = React.createClass({
             counter: 0  
         };
     },
-    incrementCounter() {
-        this.setState({counter: ++this.state.counter});
-    },
     render: function() {
         var news = this.props.news;
         var counter = this.state.counter;
@@ -94,10 +87,32 @@ var News = React.createClass({
             <div className="news">
                 {newsTemplate}
                 <p className={news.length > 0 ? 'count':'hidden'}>
-                    <strong onClick={this.incrementCounter}>Новостей всего: {news.length}</strong>
+                    <strong>Новостей всего: {news.length}</strong>
                 </p>
             </div>
         )
+    }
+});
+
+var TextInput = React.createClass({
+    displayName: 'TextInput',
+    onClickHandler() {
+        console.log(this.refs);
+        alert(ReactDOM.findDOMNode(this.refs.myTextInput).value);
+    },
+    render() {
+        return (
+            <div>
+                <input 
+                    className='text-input'
+                    onChange={this.onChangeHandler}
+                    defaultValue=''
+                    placeholder='введите значение'
+                    ref='myTextInput'
+                />
+                <button onClick={this.onClickHandler} ref='myBtn'>Показать</button>
+            </div>
+        );
     }
 });
 
@@ -106,6 +121,7 @@ var App = React.createClass({
         return (
             <div className="app">
                 <h3>Новости</h3>
+                <TextInput />
                 <News news={myNews} />
             </div>
         )
