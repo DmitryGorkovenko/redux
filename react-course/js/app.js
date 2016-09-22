@@ -1,3 +1,5 @@
+window.ee = new EventEmitter();
+
 var photos = ['images/cat.jpg', 'images/dog.jpg', 'images/ow1.jpg'];
 
 var myNews = [
@@ -109,7 +111,12 @@ var Add = React.createClass({
         e.preventDefault();
         var author = ReactDOM.findDOMNode(this.refs.author).value;
         var text = ReactDOM.findDOMNode(this.refs.text).value;
-        alert(author + '\n' + text);
+        var item = {
+            author: author,
+            text: text,
+            bigText: text
+        };
+        window.ee.emit('News.add', item);
     },
     checkBtnDisabled() {
         this.setIsBtnDisabled(this.state.checkrule);
@@ -156,12 +163,28 @@ var Add = React.createClass({
 });
 
 var App = React.createClass({
+    getInitialState() {
+        return {
+            news: myNews  
+        };
+    },
+    componentDidMount() {
+        var self = this;
+        window.ee.addListener('News.add', function(item) {
+            var news = self.state.news;
+            news.unshift(item);
+            self.setState({news: news});
+        });
+    },
+    componentWillUnmount() {
+        window.ee.removeListener('News.add');
+    },
     render: function() {
         return (
             <div className="app">
                 <Add />
                 <h3>Новости</h3>
-                <News news={myNews} />
+                <News news={this.state.news} />
             </div>
         )
     }
