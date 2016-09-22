@@ -96,6 +96,9 @@ var News = React.createClass({
 
 var TextInput = React.createClass({
     displayName: 'TextInput',
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.myTextInput).focus();  
+    },
     onClickHandler() {
         console.log(this.refs);
         alert(ReactDOM.findDOMNode(this.refs.myTextInput).value);
