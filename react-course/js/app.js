@@ -94,27 +94,63 @@ var News = React.createClass({
     }
 });
 
-var TextInput = React.createClass({
-    displayName: 'TextInput',
-    componentDidMount() {
-        ReactDOM.findDOMNode(this.refs.myTextInput).focus();  
+var Add = React.createClass({
+    displayName: 'Add',
+    getInitialState() {
+        return {
+            checkrule: false,
+            isBtnDisabled : true
+        };
     },
-    onClickHandler() {
-        console.log(this.refs);
-        alert(ReactDOM.findDOMNode(this.refs.myTextInput).value);
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.author).focus();  
+    },
+    onBtnClickHandler(e) {
+        e.preventDefault();
+        var author = ReactDOM.findDOMNode(this.refs.author).value;
+        var text = ReactDOM.findDOMNode(this.refs.text).value;
+        alert(author + '\n' + text);
+    },
+    checkBtnDisabled() {
+        this.setIsBtnDisabled(this.state.checkrule);
+    },
+    setIsBtnDisabled(checkrule) {
+        var author = ReactDOM.findDOMNode(this.refs.author).value;
+        var text = ReactDOM.findDOMNode(this.refs.text).value;
+        var isBtnDisabled = !checkrule;
+        if (!author) isBtnDisabled = true;
+        if (!text) isBtnDisabled = true;
+        this.setState({checkrule: checkrule, isBtnDisabled: isBtnDisabled});
+    },
+    onChangeRuleClick() {
+        var checkrule = !this.state.checkrule;
+        this.setIsBtnDisabled(checkrule);
     },
     render() {
+        var checkrule = this.state.checkrule;
+        var isBtnDisabled = this.state.isBtnDisabled;
         return (
-            <div>
-                <input 
-                    className='text-input'
-                    onChange={this.onChangeHandler}
+            <form className="add cf">
+                <input
+                    type="text"
+                    className='add__author'
                     defaultValue=''
-                    placeholder='введите значение'
-                    ref='myTextInput'
+                    placeholder='Ваше имя'
+                    ref='author'
+                    onChange={this.checkBtnDisabled}
                 />
-                <button onClick={this.onClickHandler} ref='myBtn'>Показать</button>
-            </div>
+                <textarea
+                    className="add__text"
+                    defaultValue=""
+                    placeholder="Текст новости"
+                    ref="text"
+                    onChange={this.checkBtnDisabled}
+                ></textarea>
+                <label className="add__checkrule">
+                    <input defaultChecked={checkrule} type="checkbox" ref="checkrule" onChange={this.onChangeRuleClick} />Я согласен с правилами
+                </label>
+                <button disabled={isBtnDisabled} className="add__btn" onClick={this.onBtnClickHandler} ref='myBtn'>Показать</button>
+            </form>
         );
     }
 });
@@ -123,8 +159,8 @@ var App = React.createClass({
     render: function() {
         return (
             <div className="app">
+                <Add />
                 <h3>Новости</h3>
-                <TextInput />
                 <News news={myNews} />
             </div>
         )
