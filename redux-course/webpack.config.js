@@ -22,6 +22,13 @@ module.exports = {
 	module: {
 		loaders: [
 			{
+				test: /\.js$/,
+				loaders: ['eslint'],
+				include: [
+					path.resolve(__dirname, 'src')
+				]
+			},
+			{
 				loaders: ['babel-loader'],
 				include: [
 					path.resolve(__dirname, 'src')
